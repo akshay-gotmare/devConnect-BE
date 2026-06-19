@@ -24,7 +24,19 @@ router.patch("/profile/edit", authUser, async (req, res) => {
   try {
     editProfileValidation(req);
     const user = req.user;
-    Object.keys(req.body).forEach((field) => (user[field] = req.body[field]));
+
+    Object.keys(req.body)
+      .map((field) => {
+        //check if skills is updated and if its a string, convert it to an array of strings
+        if (field === "skills" && typeof req.body["skills"] === "string") {
+          req.body[field] = req.body[field]
+            .split(",")
+            .map((skill) => skill.trim())
+            .filter((skill) => skill !== "");
+        }
+        return field;
+      })
+      .forEach((field) => (user[field] = req.body[field]));
     await user.save();
     res
       .status(200)

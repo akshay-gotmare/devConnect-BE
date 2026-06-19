@@ -9,6 +9,8 @@ const userSchema = new mongoose.Schema({
   skills: { type: [String] },
   age: { type: String },
   gender: { type: String },
+  photoUrl: { type: String },
+  about: { type: String },
 });
 
 // schema methods

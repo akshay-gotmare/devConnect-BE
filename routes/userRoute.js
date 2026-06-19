@@ -5,7 +5,7 @@ const ConnectionRequest = require("../models/connectionRequest");
 const { connection } = require("mongoose");
 const User = require("../models/user");
 
-const USER_SAFE_FIELDS = "firstName lastName gender age skills";
+const USER_SAFE_FIELDS = "firstName lastName gender age skills photoUrl about";
 
 router.get("/user/requests/received", authUser, async (req, res) => {
   try {
@@ -43,10 +43,6 @@ router.get("/user/connections", authUser, async (req, res) => {
       .populate("toUserId", USER_SAFE_FIELDS);
 
     const cleanConnections = connections.map((connection) => {
-      console.log({
-        From: connection.fromUserId._id,
-        To: connection.toUserId._id,
-      });
       if (
         connection.fromUserId._id.toString() === loggedInUser._id.toString()
       ) {
@@ -81,6 +77,7 @@ router.get("/user/feed", authUser, async (req, res) => {
     }).select("fromUserId toUserId");
 
     const excludedUserIds = new Set();
+    excludedUserIds.add(loggdInUser._id);
 
     // create SET of users from fromUserId or toUserId
     connections.forEach((row) => {

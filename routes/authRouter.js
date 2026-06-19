@@ -11,8 +11,17 @@ router.post("/signup", async (req, res) => {
     signUpValidation(req);
 
     // encrypt password
-    const { firstName, lastName, email, password, skills, gender, age } =
-      req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      skills,
+      gender,
+      age,
+      photoUrl,
+      about,
+    } = req.body;
 
     // Set encrypted password to db
     const hashedPass = await hashedPassword(password);
@@ -23,6 +32,8 @@ router.post("/signup", async (req, res) => {
       skills,
       gender,
       age,
+      photoUrl,
+      about,
       password: hashedPass,
     });
     if (skills && skills.length > 5) {

@@ -19,13 +19,27 @@ const signUpValidation = (req) => {
 
 const editProfileValidation = (req) => {
   const userData = req.body;
-  const editableFields = ["firstName", "lastName", "skills", "age", "gender"];
+  if (!req.body || Object.keys(req.body).length === 0) {
+    throw new Error("No fields to update");
+  }
+  const editableFields = [
+    "firstName",
+    "lastName",
+    "skills",
+    "age",
+    "gender",
+    "photoUrl",
+    "about",
+  ];
   const isEditable = Object.keys(userData).every((field) =>
     editableFields.includes(field),
   );
 
   if (!isEditable) {
-    throw new Error("Illegal fields to update");
+    const invalidFields = Object.keys(userData).filter(
+      (field) => !editableFields.includes(field),
+    );
+    throw new Error(`Illegal fields to update:  ${invalidFields.join(", ")}`);
   }
   Object.keys(userData).forEach((field) => {
     if (field === "firstName" || field === "lastName") {

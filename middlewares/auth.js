@@ -6,7 +6,7 @@ const authUser = async (req, res, next) => {
     const { token } = req.cookies;
 
     if (!token) {
-      throw new Error("Authentication failed. Plese re-login");
+      res.status(401).json({ message: "Token not found!" });
     }
 
     const decodedPayload = jwt.verify(token, "Akshay@devConnectV0.1");
