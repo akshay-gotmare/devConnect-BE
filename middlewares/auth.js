@@ -9,7 +9,7 @@ const authUser = async (req, res, next) => {
       res.status(401).json({ message: "Token not found!" });
     }
 
-    const decodedPayload = jwt.verify(token, "Akshay@devConnectV0.1");
+    const decodedPayload = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decodedPayload.userId);
 
     if (!user) {

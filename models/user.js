@@ -20,7 +20,7 @@ userSchema.methods.getJWT = function () {
   const payload = {
     userId: user._id,
   };
-  const token = jwt.sign(payload, "Akshay@devConnectV0.1");
+  const token = jwt.sign(payload, process.env.JWT_SECRET);
 
   return token;
 };
